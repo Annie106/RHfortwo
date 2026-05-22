@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RH 工作室 — 用文字雕刻时光</title>
+    <style>
+        :root {
+            --bg: #faf8f5;
+            --card-bg: #ffffff;
+            --text: #2c2c2c;
+            --text-light: #5c5c5c;
+            --accent: #b5838d;
+            --accent-soft: #f0e4e7;
+            --border: #e8e3df;
+            --shadow: 0 2px 24px rgba(0, 0, 0, 0.05);
+            --radius: 20px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-image: radial-gradient(ellipse at 50% 0%, #f5ecee 0%, transparent 60%),
+                radial-gradient(ellipse at 85% 100%, #f2e8ea 0%, transparent 50%);
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* ---- 主卡片 ---- */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 48px 40px 44px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #c9a1ab, #b5838d, #dbb5bf, #b5838d);
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        /* ---- 装饰元素 ---- */
+        .decor-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .decor-blob--1 {
+            width: 200px;
+            height: 200px;
+            background: #dbb5bf;
+            top: -60px;
+            right: -40px;
+        }
+        .decor-blob--2 {
+            width: 160px;
+            height: 160px;
+            background: #c9a1ab;
+            bottom: -50px;
+            left: -40px;
+        }
+
+        /* ---- 内容区 ---- */
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 标志 */
+        .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: var(--accent-soft);
+            color: #8b5c68;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            user-select: none;
+            transition: var(--transition);
+        }
+        .logo-mark:hover {
+            transform: scale(1.05) rotate(-3deg);
+            box-shadow: 0 8px 20px rgba(181, 131, 141, 0.25);
+        }
+
+        /* 标题 */
+        .studio-name {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+        .studio-name .accent-dot {
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            margin-bottom: 28px;
+            padding-left: 2px;
+            border-left: 3px solid var(--accent);
+            padding-left: 14px;
+            font-style: italic;
+        }
+
+        /* 分割线 */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 28px 0;
+            border: none;
+            position: relative;
+        }
+        .divider::after {
+            content: '✽';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            padding: 0 14px;
+            color: #c9a1ab;
+            font-size: 0.9rem;
+        }
+
+        /* 介绍文字 */
+        .intro-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #3a3a3a;
+            margin-bottom: 10px;
+            letter-spacing: 0.03em;
+        }
+        .intro-section p {
+            color: #4a4a4a;
+            font-size: 0.98rem;
+            margin-bottom: 16px;
+        }
+        .intro-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 信息卡片组 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        @media (max-width: 500px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                padding: 32px 24px 30px;
+            }
+            .studio-name {
+                font-size: 1.9rem;
+            }
+        }
+
+        .info-item {
+            background: #fcfaf9;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 16px;
+            transition: var(--transition);
+        }
+        .info-item:hover {
+            background: #fff;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+            border-color: #d9ceca;
+            transform: translateY(-2px);
+        }
+        .info-item .label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #9b8c88;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .info-item .value {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            word-break: break-all;
+        }
+        .info-item .value a {
+            color: #b5838d;
+            text-decoration: none;
+            border-bottom: 1px dashed #dbb5bf;
+            transition: var(--transition);
+        }
+        .info-item .value a:hover {
+            color: #8b5c68;
+            border-bottom-color: #8b5c68;
+        }
+
+        /* 博客方向标签 */
+        .tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .tag {
+            display: inline-block;
+            background: var(--accent-soft);
+            color: #6b4450;
+            font-size: 0.82rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: var(--transition);
+            cursor: default;
+        }
+        .tag:hover {
+            background: #e5cfd5;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(181, 131, 141, 0.2);
+        }
+
+        /* 页脚 */
+        .footer-note {
+            margin-top: 24px;
+            font-size: 0.85rem;
+            color: #a0928e;
+            text-align: center;
+            letter-spacing: 0.04em;
+        }
+        .footer-note .heart {
+            color: #c47a8a;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.25);
+            }
+        }
+
+        /* 创始人高亮 */
+        .founder-highlight {
+            display: inline-block;
+            background: linear-gradient(180deg, transparent 60%, #f0dfe3 60%);
+            padding: 0 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="card">
+            <!-- 装饰光斑 -->
+            <div class="decor-blob decor-blob--1"></div>
+            <div class="decor-blob decor-blob--2"></div>
+
+            <div class="content">
+                <!-- 标志 -->
+                <div class="logo-mark" aria-label="RH 工作室标志">RH</div>
+
+                <!-- 名称与标语 -->
+                <h1 class="studio-name">
+                    RH 工作室<span class="accent-dot">.</span>
+                </h1>
+                <p class="tagline">一间安静写字的小小工作室 · 用博客记录生活的回响</p>
+
+                <hr class="divider">
+
+                <!-- 简介正文 -->
+                <div class="intro-section">
+                    <h3>📖 关于我们</h3>
+                    <p>
+                        <strong>RH 工作室</strong>是一间专注于<span class="founder-highlight">个人博客创作与内容沉淀</span>的个人工作室。
+                        我们不追逐流量，不制造喧嚣，只希望在这个快速更迭的数字时代里，为值得被记录的文字、思绪与故事，保留一方温润的土壤。
+                    </p>
+                    <p>
+                        工作室由<strong>Annie</strong>一手创立并主理——从选题策划、文字撰写，到页面运维与视觉打磨，皆由 Annie 亲力亲为。
+                        RH 是工作室的代号，也是 Annie 对「记录与人文」这份初心的缩写。
+                        博客内容涵盖生活随笔、读书札记、旅行碎片、独立思考，以及那些藏在日常缝隙里的温柔瞬间。
+                    </p>
+                    <p>
+                        我们相信，真诚的表达自有千钧之力。每一篇文章都是一次与自我的对话，也期待与同频的灵魂不期而遇。
+                        无论你是偶然路过，还是长期关注，都欢迎你来 RH 的博客小坐片刻。
+                    </p>
+                </div>
+
+                <!-- 信息卡片 -->
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">👤 创始人 / 负责人</div>
+                        <div class="value">Annie</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">🏷️ 工作室性质</div>
+                        <div class="value">个人工作室 · 独立博客</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">📧 联络邮箱</div>
+                        <div class="value">
+                            <a href="mailto:annie@rhstudio.blog">anniedv106@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">🌐 博客访问</div>
+                        <div class="value">
+                            <a href="#" onclick="return false;" title="https://annie106.github.io/annie106">https://annie106.github.io/annie106</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 内容方向标签 -->
+                <div style="margin-top: 20px;">
+                    <div class="label" style="margin-bottom: 8px; color: #9b8c88; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;">📝 博客内容方向</div>
+                    <div class="tags-row">
+                        <span class="tag">生活随笔</span>
+                        <span class="tag">读书札记</span>
+                        <span class="tag">旅行碎片</span>
+                        <span class="tag">独立观点</span>
+                        <span class="tag">摄影随拍</span>
+                        <span class="tag">慢生活</span>
+                    </div>
+                </div>
+
+                <!-- 页脚 -->
+                <p class="footer-note">
+                    Made with <span class="heart">♥</span> by Annie &nbsp;|&nbsp; RH Studio &copy; 2026
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
